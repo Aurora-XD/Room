@@ -1,23 +1,22 @@
 package com.example.room;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Single;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class ViewActivity extends AppCompatActivity {
-    private Disposable disposable;
+    private CompositeDisposable compositeDisposable;
 
     @BindView(R.id.view_text_person)
     TextView mTextView;
@@ -28,48 +27,45 @@ public class ViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view);
 
         ButterKnife.bind(this);
+        compositeDisposable = new CompositeDisposable();
         setTextView();
     }
 
     private void setTextView(){
 
-        PersonDao personDao = MyApplication.getLocalDataSource().getPersonDao();
-
-        SingleObserver<List<Person>> observer = new SingleObserver<List<Person>>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                disposable = d;
-            }
-
-            @Override
-            public void onSuccess(List<Person> people) {
-                StringBuilder value = new StringBuilder();
-                for (Person person : people) {
-                    value.append("id: "+person.getId()+"\n");
-                    value.append("name: "+person.getName()+"\n");
-                    value.append("gender: "+person.getGender()+"\n");
-                    value.append("age: "+person.getAge()+"\n").append("\n");
-                }
-                mTextView.setText(value.toString());
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-        };
-
-        personDao.getAllPerson()
+        MyApplication.getLocalDataSource()
+                .getPersonDao()
+                .getAllPerson()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer);
+                .subscribe(new SingleObserver<List<Person>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        compositeDisposable.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(List<Person> people) {
+                        StringBuilder value = new StringBuilder();
+                        for (Person person : people) {
+                            value.append("id: ").append(person.getId()).append("\n")
+                                 .append("name: ").append(person.getName()).append("\n")
+                                 .append("gender: ").append(person.getGender()).append("\n")
+                                 .append("age: ").append(person.getAge()).append("\n").append("\n");
+                        }
+                        mTextView.setText(value.toString());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+                });
     }
 
     @Override
     protected void onDestroy() {
-        if(Objects.nonNull(disposable) && !disposable.isDisposed()){
-            disposable.dispose();
-        }
+        compositeDisposable.clear();
         super.onDestroy();
     }
 }

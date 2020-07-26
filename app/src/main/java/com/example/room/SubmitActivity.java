@@ -7,12 +7,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Objects;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -22,7 +21,7 @@ public class SubmitActivity extends AppCompatActivity {
     public static final int MALE = 0;
     public static final int FEMALE = 1;
 
-    private Disposable disposable;
+    private CompositeDisposable compositeDisposable;
 
     @BindView(R.id.sub_edit_name)
     EditText mName;
@@ -39,6 +38,7 @@ public class SubmitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_submit);
 
         ButterKnife.bind(this);
+        compositeDisposable = new CompositeDisposable();
     }
 
     @OnClick(R.id.sub_button_submit)
@@ -52,9 +52,9 @@ public class SubmitActivity extends AppCompatActivity {
                 Integer.parseInt(mGender.getText().toString()),
                 Integer.parseInt(mAge.getText().toString()));
 
-        PersonDao personDao = MyApplication.getLocalDataSource().getPersonDao();
-
-        disposable = personDao.createPerson(person)
+        Disposable disposable = MyApplication.getLocalDataSource()
+                .getPersonDao()
+                .createPerson(person)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Long>() {
@@ -68,6 +68,7 @@ public class SubmitActivity extends AppCompatActivity {
                         Toast.makeText(SubmitActivity.this, "失败", Toast.LENGTH_SHORT).show();
                     }
                 });
+        compositeDisposable.add(disposable);
     }
 
     private boolean checkPersonInfo() {
@@ -81,9 +82,7 @@ public class SubmitActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (Objects.nonNull(disposable) && !disposable.isDisposed()) {
-            disposable.dispose();
-        }
+        compositeDisposable.clear();
         super.onDestroy();
     }
 }
