@@ -6,6 +6,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -35,12 +37,13 @@ public class NetworkActivity extends AppCompatActivity {
     @OnClick(R.id.net_button_get_info)
     void getPersonInfo() {
 
-        Disposable disposable = Observable.create(new ObservableOnSubscribe<String>() {
+        Disposable disposable = Observable.create(new ObservableOnSubscribe<List<PersonInfo>>() {
             @Override
-            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+            public void subscribe(ObservableEmitter<List<PersonInfo>> emitter) throws Exception {
                 try {
                     Response response = HttpUtil.sendHttpRequest(PATH);
-                    emitter.onNext(response.toString());
+                    List<PersonInfo> personInfo = HttpUtil.getPersonInfo(PATH);
+                    emitter.onNext(personInfo);
                     emitter.onComplete();
                 } catch (IOException e) {
                     emitter.onError(e);
@@ -48,7 +51,14 @@ public class NetworkActivity extends AppCompatActivity {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(values -> Toast.makeText(this, values, Toast.LENGTH_SHORT).show(),
+                .subscribe(new Consumer<List<PersonInfo>>() {
+                               @Override
+                               public void accept(List<PersonInfo> personInfos) throws Exception {
+                                   if (Objects.nonNull(personInfos) && personInfos.size() > 1) {
+                                       Toast.makeText(MyApplication.getContext(), personInfos.get(0).getName(), Toast.LENGTH_SHORT).show();
+                                   }
+                               }
+                           },
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
