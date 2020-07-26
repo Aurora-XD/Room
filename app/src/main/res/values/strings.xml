@@ -2,4 +2,7 @@
     <string name="app_name">Room</string>
     <string name="text_button_main_submit">Submit</string>
     <string name="text_button_main_view">View</string>
+    <string name="text_sub_name">Input person name :</string>
+    <string name="text_sub_gender">Input person gender :</string>
+    <string name="text_sub_age">Input person age :</string>
 </resources>
