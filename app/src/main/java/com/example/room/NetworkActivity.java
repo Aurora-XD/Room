@@ -35,20 +35,24 @@ public class NetworkActivity extends AppCompatActivity {
     @OnClick(R.id.net_button_get_info)
     void getPersonInfo() {
 
-        Disposable disposable = Observable.create(new ObservableOnSubscribe<Boolean>() {
+        Disposable disposable = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
-            public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
+            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
                 try {
                     Response response = HttpUtil.sendHttpRequest(PATH);
-                    emitter.onNext(response.isSuccessful());
-                    emitter.onComplete();
+                    if(response.isSuccessful()){
+                        emitter.onNext(response.toString());
+                        emitter.onComplete();
+                    }else {
+                        emitter.onError(new Exception("request failed!"));
+                    }
                 } catch (IOException e) {
                     emitter.onError(e);
                 }
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(isSuccess -> Toast.makeText(this, isSuccess ? "Success" : "fail", Toast.LENGTH_SHORT).show(),
+                .subscribe(values -> Toast.makeText(this, values, Toast.LENGTH_SHORT).show(),
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
