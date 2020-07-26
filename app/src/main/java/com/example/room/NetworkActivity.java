@@ -40,12 +40,8 @@ public class NetworkActivity extends AppCompatActivity {
             public void subscribe(ObservableEmitter<String> emitter) throws Exception {
                 try {
                     Response response = HttpUtil.sendHttpRequest(PATH);
-                    if(response.isSuccessful()){
-                        emitter.onNext(response.toString());
-                        emitter.onComplete();
-                    }else {
-                        emitter.onError(new Exception("request failed!"));
-                    }
+                    emitter.onNext(response.toString());
+                    emitter.onComplete();
                 } catch (IOException e) {
                     emitter.onError(e);
                 }
