@@ -28,4 +28,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ViewActivity.class);
         startActivity(intent);
     }
+
+    @OnClick(R.id.button_main_network)
+    void goNetworkActivity(){
+        Intent intent = new Intent(this, NetworkActivity.class);
+        startActivity(intent);
+    }
 }
