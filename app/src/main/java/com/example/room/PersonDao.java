@@ -12,7 +12,7 @@ import io.reactivex.Single;
 public interface PersonDao {
 
     @Insert
-    Single<Person> createPerson(Person person);
+    Single<Long> createPerson(Person person);
 
     @Query("select * from person order by id")
     Single<List<Person>> getAllPerson();
