@@ -4,6 +4,7 @@
     <string name="text_button_main_view">View</string>
     <string name="text_button_main_network">Network</string>
     <string name="text_button_main_arch">Arch</string>
+    <string name="text_arch_text">start</string>
     <string name="text_button_net_get_info">Get person info</string>
     <string name="text_sub_name">Input person name :</string>
     <string name="text_sub_gender">Input person gender :</string>
