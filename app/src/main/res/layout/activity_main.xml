@@ -32,4 +32,12 @@
         android:text="@string/text_button_main_network"
         android:textAllCaps="false"/>
 
+    <Button
+        android:id="@+id/button_main_arch"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="@string/text_button_main_arch"
+        android:textAllCaps="false"/>
+
 </LinearLayout>
