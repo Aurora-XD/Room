@@ -17,6 +17,12 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
+    @OnClick(R.id.button_main_login)
+    void goLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
     @OnClick(R.id.button_main_arch)
     void goArchActivity() {
         Intent intent = new Intent(this, ArchActivity.class);

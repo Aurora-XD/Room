@@ -4,6 +4,11 @@
     <string name="text_button_main_view">View</string>
     <string name="text_button_main_network">Network</string>
     <string name="text_button_main_arch">Arch</string>
+    <string name="text_button_main_login">Login</string>
+    <string name="text_login_username">username: </string>
+    <string name="text_login_password">password: </string>
+    <string name="text_login_button_login">Login</string>
+    <string name="text_login_button_insert_user">Insert user</string>
     <string name="text_arch_text">start</string>
     <string name="text_button_net_get_info">Get person info</string>
     <string name="text_sub_name">Input person name :</string>
