@@ -6,13 +6,13 @@ import android.content.Context;
 import androidx.room.Room;
 
 import com.example.room.repository.UserDatabase;
+import com.example.room.repository.UserRepository;
 
 public class MyApplication extends Application {
 
     private static Context context;
     private static LocalDataSource localDataSource;
-
-    private static UserDatabase userDatabase;
+    private static UserRepository userRepository;
 
     @Override
     public void onCreate() {
@@ -20,7 +20,8 @@ public class MyApplication extends Application {
         context = getApplicationContext();
         localDataSource = Room.databaseBuilder(context,LocalDataSource.class,"database-room").build();
 
-        userDatabase = Room.databaseBuilder(context,UserDatabase.class,"database-user").allowMainThreadQueries().build();
+        UserDatabase userDatabase = Room.databaseBuilder(context,UserDatabase.class,"database-user").allowMainThreadQueries().build();
+        userRepository = new UserRepository(userDatabase.getUserDao());
     }
 
     public static Context getContext() {
@@ -31,7 +32,7 @@ public class MyApplication extends Application {
         return localDataSource;
     }
 
-    public static UserDatabase getUserDatabase() {
-        return userDatabase;
+    public static UserRepository getUserRepository() {
+        return userRepository;
     }
 }

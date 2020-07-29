@@ -7,5 +7,5 @@ import com.example.room.model.User;
 
 @Database(entities = {User.class},version = 1)
 public abstract class UserDatabase extends RoomDatabase {
-    public abstract UserDao getUserDao();
+    public abstract UserDBDatasource getUserDao();
 }

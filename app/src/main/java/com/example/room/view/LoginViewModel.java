@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import com.example.room.MyApplication;
 import com.example.room.model.LoginResult;
 import com.example.room.model.User;
 import com.example.room.repository.UserRepository;
@@ -27,7 +28,7 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<LoginResult> loginResult;
     private MutableLiveData<Boolean> insertResult;
     private MutableLiveData<Boolean> isUserInfoInvalid;
-    private UserRepository userRepository = new UserRepository();
+    private UserRepository userRepository = MyApplication.getUserRepository();
     private CompositeDisposable compositeDisposable;
 
     public LoginViewModel() {
