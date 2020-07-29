@@ -9,12 +9,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.room.model.LoginResult;
+import com.example.room.view.LoginViewModel;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.example.room.Result.LOGIN_SUCCESSFULLY;
-import static com.example.room.Result.PASSWORD_INVALID;
+import static com.example.room.model.Result.LOGIN_SUCCESSFULLY;
+import static com.example.room.model.Result.PASSWORD_INVALID;
 
 public class LoginActivity extends AppCompatActivity {
 

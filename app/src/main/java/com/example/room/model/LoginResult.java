@@ -1,4 +1,6 @@
-package com.example.room;
+package com.example.room.model;
+
+import com.example.room.model.Result;
 
 public class LoginResult {
     public Result result;

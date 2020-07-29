@@ -1,4 +1,4 @@
-package com.example.room;
+package com.example.room.view;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -9,15 +9,19 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import com.example.room.model.LoginResult;
+import com.example.room.model.User;
+import com.example.room.repository.UserRepository;
+
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.example.room.Result.LOGIN_SUCCESSFULLY;
-import static com.example.room.Result.PASSWORD_INVALID;
-import static com.example.room.Result.USER_NAME_NOT_EXIST;
+import static com.example.room.model.Result.LOGIN_SUCCESSFULLY;
+import static com.example.room.model.Result.PASSWORD_INVALID;
+import static com.example.room.model.Result.USER_NAME_NOT_EXIST;
 
 public class LoginViewModel extends ViewModel {
     private MutableLiveData<LoginResult> loginResult;

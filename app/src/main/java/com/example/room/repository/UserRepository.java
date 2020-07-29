@@ -1,6 +1,8 @@
-package com.example.room;
+package com.example.room.repository;
 
 import android.util.Log;
+
+import com.example.room.model.User;
 
 import io.reactivex.Maybe;
 

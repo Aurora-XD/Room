@@ -5,6 +5,8 @@ import android.content.Context;
 
 import androidx.room.Room;
 
+import com.example.room.repository.UserDatabase;
+
 public class MyApplication extends Application {
 
     private static Context context;
