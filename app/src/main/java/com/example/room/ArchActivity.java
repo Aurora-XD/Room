@@ -1,20 +1,16 @@
 package com.example.room;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class ArchActivity extends AppCompatActivity {
 
@@ -36,41 +32,24 @@ public class ArchActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         archViewModel = new ViewModelProvider(this).get(ArchViewModel.class);
 
-        archViewModel.getNumber().observe(this, new androidx.lifecycle.Observer<Integer>() {
+        archViewModel.observeEnableButton(this, new androidx.lifecycle.Observer<Boolean>() {
             @Override
-            public void onChanged(Integer integer) {
-                mTextView.setText(String.valueOf(integer));
+            public void onChanged(Boolean value) {
+                mButton.setEnabled(value);
+            }
+        });
+
+        archViewModel.observeIsStart(this, new androidx.lifecycle.Observer<Long>() {
+            @Override
+            public void onChanged(Long value) {
+                mTextView.setText(String.valueOf(value));
             }
         });
     }
 
     @OnClick(R.id.arch_button_start)
     void startIncrease(){
-        archViewModel.increase()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Integer>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        mButton.setEnabled(false);
-                        compositeDisposable.add(d);
-                    }
-
-                    @Override
-                    public void onNext(Integer integer) {
-                        archViewModel.getNumber().setValue(integer);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+        archViewModel.increase();
     }
 
     @Override
