@@ -3,13 +3,13 @@ package com.example.room;
 import android.app.Application;
 import android.content.Context;
 
-import com.example.room.repository.UserDatabase;
+import com.example.room.repository.UserRepository;
 
 import static org.mockito.Mockito.mock;
 
 public class MyApplication extends Application {
+    private UserRepository userRepository;
     private static Context context;
-    private static UserDatabase userDatabase;
 
     @Override
     public void onCreate() {
@@ -17,16 +17,16 @@ public class MyApplication extends Application {
     }
 
     public static Context getContext() {
-        if(context == null){
-            mock(Application.class);
+        if (context == null) {
+            context = mock(Application.class);
         }
         return context;
     }
 
-    public static UserDatabase getUserDatabase() {
-        if(userDatabase == null){
-            mock(UserDatabase.class);
+    public UserRepository getUserRepository() {
+        if (userRepository == null) {
+            userRepository = mock(UserRepository.class);
         }
-        return userDatabase;
+        return userRepository;
     }
 }

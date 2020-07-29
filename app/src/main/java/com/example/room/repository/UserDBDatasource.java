@@ -11,8 +11,8 @@ import io.reactivex.Maybe;
 @Dao
 public interface UserDBDatasource extends UserDataSource {
     @Insert
-    public Maybe<Long> saveUser(User user);
+    Maybe<Long> saveUser(User user);
 
     @Query("select * from user where username = :name")
-    public Maybe<User> findByName(String name);
+    Maybe<User> findByName(String name);
 }

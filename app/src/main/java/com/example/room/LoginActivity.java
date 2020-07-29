@@ -37,11 +37,12 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+        loginViewModel.setUserRepository(((MyApplication)getApplicationContext()).getUserRepository());
 
         loginViewModel.observeInsertResult(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean aBoolean) {
-                Toast.makeText(MyApplication.getContext(), aBoolean ? "Insert successfully!" : "Insert Failed!", Toast.LENGTH_SHORT).show();
+                showMessage(aBoolean ? "Insert successfully!" : "Insert Failed!");
             }
         });
 
@@ -50,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onChanged(Boolean aBoolean) {
                 Log.d("onChanged", "checkUserInfo: " + aBoolean);
                 if (!aBoolean) {
-                    Toast.makeText(MyApplication.getContext(), "Invalid user info", Toast.LENGTH_SHORT).show();
+                    showMessage("Invalid user info");
                 }
             }
         });
@@ -59,14 +60,18 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onChanged(LoginResult loginResult) {
                 if (LOGIN_SUCCESSFULLY.equals(loginResult.getResult())) {
-                    Toast.makeText(MyApplication.getContext(), "Login successfully", Toast.LENGTH_SHORT).show();
+                    showMessage("Login successfully");
                 } else if (PASSWORD_INVALID.equals(loginResult.result)) {
-                    Toast.makeText(MyApplication.getContext(), "Password is invalid", Toast.LENGTH_SHORT).show();
+                    showMessage("Password is invalid");
                 } else {
-                    Toast.makeText(MyApplication.getContext(), "Username does not exist", Toast.LENGTH_SHORT).show();
+                    showMessage("Username does not exist");
                 }
             }
         });
+    }
+
+    private void  showMessage(String string){
+        Toast.makeText(getApplicationContext(), string, Toast.LENGTH_SHORT).show();
     }
 
     @OnClick(R.id.login_button_insert_user)

@@ -28,7 +28,7 @@ public class LoginViewModel extends ViewModel {
     private MutableLiveData<LoginResult> loginResult;
     private MutableLiveData<Boolean> insertResult;
     private MutableLiveData<Boolean> isUserInfoInvalid;
-    private UserRepository userRepository = MyApplication.getUserRepository();
+    private UserRepository userRepository;
     private CompositeDisposable compositeDisposable;
 
     public LoginViewModel() {
@@ -105,6 +105,10 @@ public class LoginViewModel extends ViewModel {
         isUserInfoInvalid.postValue(isInvalid);
         Log.d("TAG", "checkUserInfo: "+isInvalid);
         return isInvalid;
+    }
+
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override

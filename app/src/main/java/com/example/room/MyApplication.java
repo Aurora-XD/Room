@@ -12,7 +12,7 @@ public class MyApplication extends Application {
 
     private static Context context;
     private static LocalDataSource localDataSource;
-    private static UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Override
     public void onCreate() {
@@ -20,7 +20,7 @@ public class MyApplication extends Application {
         context = getApplicationContext();
         localDataSource = Room.databaseBuilder(context,LocalDataSource.class,"database-room").build();
 
-        UserDatabase userDatabase = Room.databaseBuilder(context,UserDatabase.class,"database-user").allowMainThreadQueries().build();
+        UserDatabase userDatabase = Room.databaseBuilder(getApplicationContext(),UserDatabase.class,"database-user").allowMainThreadQueries().build();
         userRepository = new UserRepository(userDatabase.getUserDao());
     }
 
@@ -32,7 +32,7 @@ public class MyApplication extends Application {
         return localDataSource;
     }
 
-    public static UserRepository getUserRepository() {
+    public UserRepository getUserRepository() {
         return userRepository;
     }
 }
